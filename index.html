@@ -6,9 +6,11 @@
     <title>Portal do Colaborador - Vena144</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Chart.js e Plugin de DataLabels -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-database-compat.js"></script>
 
     <style>
         :root {
@@ -24,14 +26,12 @@
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-
         body { background-color: var(--bg-body); color: var(--text-main); padding-bottom: 50px; }
 
         .header { background: var(--purple-grad); color: var(--white); text-align: center; padding: 30px 20px 20px; }
         .header h1 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
         .header p { font-size: 0.95rem; opacity: 0.9; margin-top: 5px; }
 
-        /* Apenas 2 abas aparecerão! */
         .tabs { display: flex; background: var(--white); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .tab-btn { flex: 1; padding: 16px 0; text-align: center; background: none; border: none; font-size: 1rem; font-weight: 600; color: var(--text-light); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; }
         .tab-btn.active { color: var(--purple-light); border-bottom-color: var(--purple-light); }
@@ -79,14 +79,12 @@
         <p>Mapeamento de Competências Logísticas</p>
     </div>
 
-    <!-- O Colaborador só enxerga Início e Devolutiva -->
     <div class="tabs" id="main-tabs">
         <button class="tab-btn active" id="tab-inicio" onclick="switchTab('inicio')">Início</button>
         <button class="tab-btn" id="tab-devolutivas" onclick="switchTab('devolutivas')">Minha Devolutiva</button>
     </div>
 
     <div class="container">
-        <!-- TELA 1: INÍCIO (LOGIN E QUIZ) -->
         <div id="view-inicio" class="view active">
             <div class="card" id="login-section">
                 <h2 style="margin-bottom: 20px; color: var(--purple-dark);">Identificação</h2>
@@ -107,9 +105,12 @@
                 <div id="options-container"></div>
                 <button class="btn" id="next-btn" style="margin-top: 25px;" onclick="nextQuestion()" disabled>Confirmar e Avançar</button>
             </div>
+            
+            <div class="card" id="loading-section" style="display: none; text-align: center;">
+                <h3 style="color: var(--purple-light);">Salvando resultados na nuvem...</h3>
+            </div>
         </div>
 
-        <!-- TELA 2: DEVOLUTIVAS (MAPA) -->
         <div id="view-devolutivas" class="view">
             <div class="card" id="no-result" style="text-align: center; padding: 40px 20px;">
                 <h3 style="color: var(--text-light);">Nenhuma devolutiva gerada.</h3>
@@ -144,11 +145,10 @@
             </div>
         </div>
 
-        <!-- TELA 3: GESTOR (TOTALMENTE OCULTA, SÓ ABRE COM A SENHA MESTRA) -->
         <div id="view-gestor" class="view">
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">
-                    <h2 style="color: var(--purple-dark); margin: 0;">Painel da Liderança (Ressuprimento)</h2>
+                    <h2 style="color: var(--purple-dark); margin: 0;">Painel da Liderança</h2>
                 </div>
                 
                 <div id="lista-avaliacoes"></div>
@@ -159,6 +159,27 @@
     </div>
 
 <script>
+    // ==========================================
+    // CONFIGURAÇÃO DO FIREBASE (Sua conta)
+    // ==========================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyBINPrQHY3ViOoirPyIiWZsVzKbC2egKps",
+      authDomain: "desenvolver144.firebaseapp.com",
+      databaseURL: "https://desenvolver144-default-rtdb.firebaseio.com",
+      projectId: "desenvolver144",
+      storageBucket: "desenvolver144.firebasestorage.app",
+      messagingSenderId: "258666388892",
+      appId: "1:258666388892:web:0dc2d3bced1a998e287c59"
+    };
+
+    // Inicializa o Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+
+    // ==========================================
+    // LÓGICA DO APP E GRÁFICOS
+    // ==========================================
     Chart.register(ChartDataLabels);
 
     function switchTab(tabId) {
@@ -172,25 +193,25 @@
 
     const allQuestions = [
         { dim: 'INI', q: "Faltam 5 minutos para o intervalo e a linha parou por falta de paletes vazios. O que você faz?", opts: [{t: "Vou rapidamente até o estoque, pego o palete e destravo a linha.", p: 100}, {t: "Aviso o líder pelo rádio e aguardo alguém trazer.", p: 50}, {t: "Aproveito que a linha parou e saio para o intervalo.", p: 0}] },
-        { dim: 'INI', q: "Você percebe que produtos pesados estão na parte mais alta da prateleira, dificultando a operação.", opts: [{t: "Anoto os códigos e sugiro à liderança uma mudança de layout.", p: 100}, {t: "Comento com os colegas que o layout é ruim, mas sigo trabalhando.", p: 50}, {t: "Não faço nada, pois não é meu trabalho organizar o layout.", p: 0}] },
-        { dim: 'INI', q: "Você terminou sua lista de picking antes do fim do turno, mas outros corredores estão lotados.", opts: [{t: "Procuro a liderança e pergunto onde posso ajudar a bater a meta.", p: 100}, {t: "Começo a limpar meu equipamento devagar.", p: 50}, {t: "Vou para o vestiário mais cedo.", p: 0}] },
+        { dim: 'INI', q: "Você percebe que produtos pesados estão na parte mais alta da prateleira, dificultando a operação.", opts: [{t: "Anoto os códigos e sugiro à liderança uma mudança de layout.", p: 100}, {t: "Comento com os colegas que o layout é ruim, mas sigo trabalhando.", p: 50}, {t: "Não faço nada.", p: 0}] },
+        { dim: 'INI', q: "Você terminou sua lista de picking antes do fim do turno, mas outros corredores estão lotados.", opts: [{t: "Procuro a liderança e pergunto onde posso ajudar.", p: 100}, {t: "Começo a limpar meu equipamento devagar.", p: 50}, {t: "Vou para o vestiário mais cedo.", p: 0}] },
         
-        { dim: 'ORG', q: "Ao guardar mercadorias, a caixa não cabe perfeitamente no espaço alinhado.", opts: [{t: "Arrumo as outras caixas para criar o espaço correto e alinhado.", p: 100}, {t: "Coloco a caixa meio de lado, o importante é estar no endereço.", p: 50}, {t: "Deixo no corredor para o inventário arrumar.", p: 0}] },
-        { dim: 'ORG', q: "Terminou o descarregamento e sobrou plástico-filme espalhado no piso.", opts: [{t: "Recolho tudo imediatamente e jogo nas lixeiras de descarte.", p: 100}, {t: "Empurro para o canto da parede para liberar passagem.", p: 50}, {t: "Deixo no chão e vou embora.", p: 0}] },
+        { dim: 'ORG', q: "Ao guardar mercadorias, a caixa não cabe perfeitamente no espaço alinhado.", opts: [{t: "Arrumo as outras caixas para criar o espaço correto.", p: 100}, {t: "Coloco a caixa meio de lado.", p: 50}, {t: "Deixo no corredor para o inventário arrumar.", p: 0}] },
+        { dim: 'ORG', q: "Terminou o descarregamento e sobrou plástico-filme espalhado no piso.", opts: [{t: "Recolho tudo imediatamente e jogo nas lixeiras.", p: 100}, {t: "Empurro para o canto da parede.", p: 50}, {t: "Deixo no chão e vou embora.", p: 0}] },
         
-        { dim: 'EQP', q: "No fim de turno, como você passa o bastão para o colega que está chegando?", opts: [{t: "Repasso as pendências, o estado da máquina e desejo bom trabalho.", p: 100}, {t: "Aviso apenas se houver algo muito urgente parado.", p: 50}, {t: "Deixo a máquina e vou embora sem falar com ele.", p: 0}] },
-        { dim: 'EQP', q: "Um colega recém-contratado está travando o fluxo porque ainda não pegou o jeito do sistema.", opts: [{t: "Paro um instante, ensino um atalho e o ajudo a entrar no ritmo.", p: 100}, {t: "Pego a tarefa dele e faço eu mesmo para ir rápido.", p: 50}, {t: "Fico impaciente e digo para ele se virar.", p: 0}] },
-        { dim: 'EQP', q: "Você escuta uma fofoca negativa sobre um colega da equipe. Como lida com isso?", opts: [{t: "Corto o assunto, não passo a fofoca para frente e foco na operação.", p: 100}, {t: "Escuto, mas comento apenas com meus amigos próximos.", p: 50}, {t: "Espalho a notícia para os outros ou vou tirar satisfação.", p: 0}] },
+        { dim: 'EQP', q: "No fim de turno, como você passa o bastão para o colega que está chegando?", opts: [{t: "Repasso as pendências e o estado da máquina.", p: 100}, {t: "Aviso apenas se houver algo muito urgente parado.", p: 50}, {t: "Deixo a máquina e vou embora sem falar com ele.", p: 0}] },
+        { dim: 'EQP', q: "Um colega recém-contratado está travando o fluxo.", opts: [{t: "Paro um instante, ensino um atalho e o ajudo a entrar no ritmo.", p: 100}, {t: "Pego a tarefa dele e faço eu mesmo.", p: 50}, {t: "Fico impaciente e digo para ele se virar.", p: 0}] },
+        { dim: 'EQP', q: "Você escuta uma fofoca negativa sobre um colega da equipe. Como lida com isso?", opts: [{t: "Corto o assunto e foco na operação.", p: 100}, {t: "Escuto, mas comento apenas com meus amigos próximos.", p: 50}, {t: "Espalho a notícia ou vou tirar satisfação.", p: 0}] },
         
-        { dim: 'RES', q: "Ocorre um 'furo de estoque' crítico no meio de uma onda de pedidos urgentes.", opts: [{t: "Mantenho o controle, aciono o inventário e sigo separando outras tarefas.", p: 100}, {t: "Continuo trabalhando, mas fico nervoso e cometo erros.", p: 50}, {t: "Paro de trabalhar e começo a reclamar alto.", p: 0}] },
-        { dim: 'RES', q: "Uma carreta não programada chega e altera as prioridades do seu dia.", opts: [{t: "Entendo a dinâmica logística, me reorganizo e inicio a tarefa.", p: 100}, {t: "Faço o serviço, mas reclamo com todos sobre a desorganização.", p: 50}, {t: "Me recuso a fazer.", p: 0}] },
-        { dim: 'RES', q: "Um líder ou colega fala de forma ríspida devido ao estresse de um dia com muito volume.", opts: [{t: "Entendo o calor da operação, não levo para o pessoal e converso depois.", p: 100}, {t: "Fico calado, guardo mágoa e passo a não ajudar a pessoa.", p: 50}, {t: "Respondo no mesmo tom e inicio uma discussão.", p: 0}] },
+        { dim: 'RES', q: "Ocorre um 'furo de estoque' crítico no meio de uma onda de pedidos urgentes.", opts: [{t: "Mantenho o controle e sigo separando outras tarefas.", p: 100}, {t: "Continuo trabalhando, mas fico nervoso.", p: 50}, {t: "Paro de trabalhar e começo a reclamar alto.", p: 0}] },
+        { dim: 'RES', q: "Uma carreta não programada chega e altera as prioridades do seu dia.", opts: [{t: "Entendo a dinâmica, me reorganizo e inicio a tarefa.", p: 100}, {t: "Faço o serviço, mas reclamo da desorganização.", p: 50}, {t: "Me recuso a fazer.", p: 0}] },
+        { dim: 'RES', q: "Um líder ou colega fala de forma ríspida devido ao estresse.", opts: [{t: "Entendo o calor da operação e converso depois.", p: 100}, {t: "Fico calado, guardo mágoa e passo a não ajudar.", p: 50}, {t: "Respondo no mesmo tom e inicio uma discussão.", p: 0}] },
         
-        { dim: 'TEC', q: "Ao coletar produtos com validade, o sistema exige verificação. Qual a sua prática?", opts: [{t: "Confiro rigorosamente a data (FEFO), garantindo o giro correto.", p: 100}, {t: "Bipo a primeira data que vejo na frente do pallet.", p: 50}, {t: "Digito manualmente para ganhar tempo.", p: 0}] },
-        { dim: 'TEC', q: "O sistema do coletor fica muito lento e trava.", opts: [{t: "Reinicio o coletor, anoto referências e me preparo para não parar.", p: 100}, {t: "Fico aguardando de braços cruzados.", p: 50}, {t: "Uso como desculpa para ir tomar café.", p: 0}] },
+        { dim: 'TEC', q: "Ao coletar produtos com validade, o sistema exige verificação. Qual a sua prática?", opts: [{t: "Confiro rigorosamente a data (FEFO).", p: 100}, {t: "Bipo a primeira data que vejo na frente do pallet.", p: 50}, {t: "Digito manualmente para ganhar tempo.", p: 0}] },
+        { dim: 'TEC', q: "O sistema do coletor fica muito lento e trava.", opts: [{t: "Reinicio o coletor e me preparo para não parar o físico.", p: 100}, {t: "Fico aguardando de braços cruzados.", p: 50}, {t: "Uso como desculpa para ir tomar café.", p: 0}] },
         
-        { dim: 'SEG', q: "Você precisa entrar na câmara fria por apenas 15 segundos para pegar uma caixa.", opts: [{t: "Visto a japona térmica e as luvas. Regra não tem exceção.", p: 100}, {t: "Peço para alguém que já está lá dentro pegar.", p: 50}, {t: "Entro só de uniforme, é muito rápido.", p: 0}] },
-        { dim: 'SEG', q: "Como gerencia o uso de EPI e Celular durante a movimentação de carga?", opts: [{t: "Celular guardado na operação e EPI completo 100% do tempo.", p: 100}, {t: "EPI completo, mas olho o celular quando o corredor está vazio.", p: 50}, {t: "Uso o celular enquanto piloto a máquina devagar.", p: 0}] }
+        { dim: 'SEG', q: "Você precisa entrar na câmara fria por apenas 15 segundos.", opts: [{t: "Visto a japona térmica e as luvas. Regra não tem exceção.", p: 100}, {t: "Peço para alguém que já está lá dentro pegar.", p: 50}, {t: "Entro só de uniforme.", p: 0}] },
+        { dim: 'SEG', q: "Como gerencia o uso de EPI e Celular?", opts: [{t: "Celular guardado e EPI completo 100% do tempo.", p: 100}, {t: "EPI completo, mas olho o celular de vez em quando.", p: 50}, {t: "Uso o celular enquanto opero a máquina.", p: 0}] }
     ];
 
     let quizQuestions = [], currentQ = 0, selectedScore = null, myChart = null;
@@ -209,13 +230,11 @@
         const nome = document.getElementById('user-name').value;
         const mat = document.getElementById('user-id').value;
         
-        // ==========================================
-        // CÓDIGO SECRETO DO GESTOR
-        // ==========================================
+        // CHAVE MESTRA DO GESTOR
         if(nome.toLowerCase().trim() === 'gestor' && mat === '144') {
             document.getElementById('user-name').value = ''; 
             document.getElementById('user-id').value = '';
-            document.getElementById('main-tabs').style.display = 'none'; // Esconde as abas
+            document.getElementById('main-tabs').style.display = 'none'; 
             switchTab('gestor');
             loadAdminData();
             return;
@@ -282,7 +301,7 @@
         'ORG': "Foque no alinhamento de paletes, limpeza do setor e nos processos sistemáticos do WMS.",
         'EQP': "Integre-se mais, evite fofocas, ofereça ajuda aos colegas e faça passagens de turno impecáveis.",
         'RES': "Em momentos de pico, respire fundo, não leve cobranças para o pessoal e evite reclamações.",
-        'TEC': "Dedique-se a entender as regras técnicas de FEFO/FIFO e as funcionalidades avançadas do WMS.",
+        'TEC': "Dedique-se a entender as regras técnicas de FEFO/FIFO e as funcionalidades do WMS.",
         'SEG': "Elimine as exceções para não usar EPI e evite distrações com o celular durante a operação."
     };
     
@@ -312,19 +331,26 @@
 
         const resultData = { nome, date: dataAvaliacao, pctScores, dom, minDim };
         
-        // FIREBASE LOCAL
-        let db = JSON.parse(localStorage.getItem('vena_db') || '[]');
-        db.push(resultData);
-        localStorage.setItem('vena_db', JSON.stringify(db));
-
-        renderDevolutivaView(nome, dataAvaliacao, dom, minDim, pctScores, true);
-        
-        document.getElementById('login-section').style.display = 'block';
+        // UI mostra carregamento enquanto salva no Firebase
         document.getElementById('quiz-section').style.display = 'none';
-        document.getElementById('user-name').value = ''; document.getElementById('user-id').value = '';
+        document.getElementById('loading-section').style.display = 'block';
+
+        // SALVANDO NO FIREBASE NUVEM
+        database.ref('avaliacoes').push(resultData)
+            .then(() => {
+                document.getElementById('loading-section').style.display = 'none';
+                renderDevolutivaView(nome, dataAvaliacao, dom, minDim, pctScores, true);
+                
+                document.getElementById('login-section').style.display = 'block';
+                document.getElementById('user-name').value = ''; document.getElementById('user-id').value = '';
+            })
+            .catch((error) => {
+                alert("Ocorreu um erro ao salvar: " + error.message);
+                document.getElementById('loading-section').style.display = 'none';
+                document.getElementById('login-section').style.display = 'block';
+            });
     }
 
-    // O parâmetro isColaborador define se exibe as abas normais ou o botão de voltar do gestor
     function renderDevolutivaView(nome, dataTexto, dom, minDim, pctScores, isColaborador = false) {
         document.getElementById('no-result').style.display = 'none';
         document.getElementById('result-content').style.display = 'block';
@@ -345,7 +371,6 @@
             document.getElementById('main-tabs').style.display = 'flex';
             switchTab('devolutivas');
         } else {
-            // Se for o gestor visualizando, troca as views sem mexer nas abas
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-devolutivas').classList.add('active');
         }
@@ -387,50 +412,58 @@
         });
     }
 
-    // --- PAINEL DO GESTOR ---
+    // --- PAINEL DO GESTOR (CONECTADO À NUVEM) ---
     function loadAdminData() {
-        const db = JSON.parse(localStorage.getItem('vena_db') || '[]');
         const container = document.getElementById('lista-avaliacoes');
-        container.innerHTML = '';
+        container.innerHTML = '<p style="color:var(--text-light)">Carregando avaliações da nuvem...</p>';
 
-        if(db.length === 0) {
-            container.innerHTML = '<p style="color:var(--text-light)">Nenhuma avaliação recebida ainda.</p>';
-            return;
-        }
-
-        db.reverse().forEach(item => {
-            const div = document.createElement('div');
-            div.style.cssText = "padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; cursor: pointer; transition: all 0.2s;";
-            div.onmouseover = () => div.style.borderColor = "var(--purple-light)";
-            div.onmouseout = () => div.style.borderColor = "var(--border)";
+        database.ref('avaliacoes').once('value').then((snapshot) => {
+            container.innerHTML = '';
             
-            div.innerHTML = `
-                <div>
-                    <strong style="color: var(--purple-dark); font-size: 1.1rem;">${item.nome}</strong><br>
-                    <span style="font-size: 0.85rem; color: var(--text-light);">${item.date}</span>
-                </div>
-                <div style="background: var(--purple-light); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">Ver Mapa</div>
-            `;
-            // Ao clicar, o gestor vê o gráfico e criamos um botão para ele voltar à lista
-            div.onclick = () => {
-                renderDevolutivaView(item.nome, item.date, item.dom, item.minDim, item.pctScores, false);
+            if(!snapshot.exists()) {
+                container.innerHTML = '<p style="color:var(--text-light)">Nenhuma avaliação recebida ainda.</p>';
+                return;
+            }
+
+            // Transforma o objeto do Firebase em Array e inverte a ordem (mais novos primeiro)
+            const data = snapshot.val();
+            const dbArray = Object.values(data).reverse();
+
+            dbArray.forEach(item => {
+                const div = document.createElement('div');
+                div.style.cssText = "padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; cursor: pointer; transition: all 0.2s;";
+                div.onmouseover = () => div.style.borderColor = "var(--purple-light)";
+                div.onmouseout = () => div.style.borderColor = "var(--border)";
                 
-                // Adiciona botão "Voltar" temporário na tela de devolutiva para o gestor
-                let btnVoltar = document.getElementById('btn-voltar-gestor');
-                if(!btnVoltar) {
-                    btnVoltar = document.createElement('button');
-                    btnVoltar.id = 'btn-voltar-gestor';
-                    btnVoltar.className = 'btn btn-outline';
-                    btnVoltar.innerText = '← Voltar para a Lista da Equipe';
-                    btnVoltar.onclick = () => {
-                        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                        document.getElementById('view-gestor').classList.add('active');
-                        btnVoltar.remove(); // Tira o botão ao voltar
-                    };
-                    document.getElementById('result-content').appendChild(btnVoltar);
-                }
-            };
-            container.appendChild(div);
+                div.innerHTML = `
+                    <div>
+                        <strong style="color: var(--purple-dark); font-size: 1.1rem;">${item.nome}</strong><br>
+                        <span style="font-size: 0.85rem; color: var(--text-light);">${item.date}</span>
+                    </div>
+                    <div style="background: var(--purple-light); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">Ver Mapa</div>
+                `;
+                
+                div.onclick = () => {
+                    renderDevolutivaView(item.nome, item.date, item.dom, item.minDim, item.pctScores, false);
+                    
+                    let btnVoltar = document.getElementById('btn-voltar-gestor');
+                    if(!btnVoltar) {
+                        btnVoltar = document.createElement('button');
+                        btnVoltar.id = 'btn-voltar-gestor';
+                        btnVoltar.className = 'btn btn-outline';
+                        btnVoltar.innerText = '← Voltar para a Lista da Equipe';
+                        btnVoltar.onclick = () => {
+                            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                            document.getElementById('view-gestor').classList.add('active');
+                            btnVoltar.remove(); 
+                        };
+                        document.getElementById('result-content').appendChild(btnVoltar);
+                    }
+                };
+                container.appendChild(div);
+            });
+        }).catch((error) => {
+            container.innerHTML = `<p style="color:red">Erro ao carregar do banco: ${error.message}</p>`;
         });
     }
 
