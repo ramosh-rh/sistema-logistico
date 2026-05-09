@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Colaborador - Vena144</title>
+    <title>Portal Vena144 - Logística</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -22,19 +22,15 @@
             --text-main: #334155;
             --text-light: #64748b;
             --border: #e2e8f0;
-            --accent: #f59e0b;
+            --whatsapp: #25D366;
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         body { background-color: var(--bg-body); color: var(--text-main); padding-bottom: 50px; }
 
-        .header { background: var(--purple-grad); color: var(--white); text-align: center; padding: 30px 20px 20px; }
+        .header { background: var(--purple-grad); color: var(--white); text-align: center; padding: 30px 20px; }
         .header h1 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
         .header p { font-size: 0.95rem; opacity: 0.9; margin-top: 5px; }
-
-        .tabs { display: flex; background: var(--white); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-        .tab-btn { flex: 1; padding: 16px 0; text-align: center; background: none; border: none; font-size: 1rem; font-weight: 600; color: var(--text-light); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; }
-        .tab-btn.active { color: var(--purple-light); border-bottom-color: var(--purple-light); }
 
         .container { max-width: 750px; margin: 25px auto; padding: 0 20px; }
         .card { background: var(--white); border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid var(--border); }
@@ -44,30 +40,31 @@
 
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-main); }
-        .input-group input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; transition: border 0.2s;}
-        .input-group input:focus { outline: none; border-color: var(--purple-light); box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1); }
+        .input-group input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+        .input-group input:focus { outline: none; border-color: var(--purple-light); }
 
         .btn { background: var(--purple-light); color: var(--white); border: none; padding: 16px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; transition: background 0.2s; }
         .btn:hover { background: #7e22ce; }
         .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
         
-        .btn-outline { background: transparent; color: var(--purple-light); border: 2px solid var(--purple-light); margin-top: 10px;}
-        .btn-outline:hover { background: var(--purple-light); color: white;}
+        .btn-outline { background: transparent; color: var(--purple-light); border: 2px solid var(--purple-light); margin-top: 15px;}
+        .btn-outline:hover { background: var(--purple-light); color: var(--white); }
+        
+        .btn-whatsapp { background: var(--whatsapp); color: white; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-whatsapp:hover { background: #1ebc59; }
+        .btn-whatsapp svg { width: 24px; height: 24px; fill: currentColor; }
 
         .question-text { font-size: 1.15rem; font-weight: 700; margin-bottom: 25px; line-height: 1.5; color: var(--purple-dark); }
-        .option-card { padding: 16px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; margin-bottom: 12px; transition: all 0.2s; font-weight: 600; color: var(--text-light); }
-        .option-card:hover { border-color: var(--purple-light); background: #faf5ff; color: var(--purple-dark); }
+        .option-card { padding: 16px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; margin-bottom: 12px; font-weight: 600; }
         .option-card.selected { border-color: var(--purple-light); background: var(--purple-light); color: var(--white); }
 
         .chart-container { position: relative; width: 100%; max-width: 500px; margin: 0 auto 30px; }
-        .profile-title { font-size: 1.5rem; font-weight: 800; color: var(--purple-dark); margin-bottom: 10px; border-bottom: 2px solid var(--border); padding-bottom: 10px;}
-        .profile-desc { font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-bottom: 20px; }
         
         .highlight-box { background: #faf5ff; border-left: 5px solid var(--purple-light); padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
-        .highlight-box h4 { color: var(--purple-light); margin-bottom: 8px; font-size: 1.1rem;}
-        
         .pdi-box { background: #f0fdf4; border-left: 5px solid #16a34a; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
-        .pdi-box h4 { color: #16a34a; margin-bottom: 8px; font-size: 1.1rem;}
+        
+        .gestor-item { padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; cursor: pointer; transition: all 0.2s; }
+        .gestor-item:hover { border-color: var(--purple-light); background: #f3e8ff; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -79,15 +76,11 @@
         <p>Mapeamento de Competências Logísticas</p>
     </div>
 
-    <div class="tabs" id="main-tabs">
-        <button class="tab-btn active" id="tab-inicio" onclick="switchTab('inicio')">Início</button>
-        <button class="tab-btn" id="tab-devolutivas" onclick="switchTab('devolutivas')">Minha Devolutiva</button>
-    </div>
-
     <div class="container">
+        
         <div id="view-inicio" class="view active">
             <div class="card" id="login-section">
-                <h2 style="margin-bottom: 20px; color: var(--purple-dark);">Identificação</h2>
+                <h2 style="margin-bottom: 20px; color: var(--purple-dark);">Identificação da Equipe</h2>
                 <div class="input-group">
                     <label>Nome Completo</label>
                     <input type="text" id="user-name" placeholder="Ex: João da Silva">
@@ -97,6 +90,8 @@
                     <input type="text" id="user-id" placeholder="Ex: 12345">
                 </div>
                 <button class="btn" onclick="startQuiz()">Iniciar Avaliação</button>
+                
+                <button class="btn btn-outline" onclick="abrirGestor()">🔒 Acesso Restrito (Liderança)</button>
             </div>
 
             <div class="card" id="quiz-section" style="display: none;">
@@ -107,30 +102,23 @@
             </div>
             
             <div class="card" id="loading-section" style="display: none; text-align: center;">
-                <h3 style="color: var(--purple-light);">Salvando resultados na nuvem...</h3>
+                <h3 style="color: var(--purple-light);">Processando perfil e salvando...</h3>
             </div>
         </div>
 
         <div id="view-devolutivas" class="view">
-            <div class="card" id="no-result" style="text-align: center; padding: 40px 20px;">
-                <h3 style="color: var(--text-light);">Nenhuma devolutiva gerada.</h3>
-                <p style="margin-top: 10px;">Preencha seus dados na aba "Início" e conclua a avaliação para visualizar seu mapa.</p>
-            </div>
-
-            <div id="result-content" style="display: none;">
+            <div id="result-content">
                 <div class="card">
-                    <h3 style="text-align: center; margin-bottom: 5px; color: var(--text-light); text-transform: uppercase; font-size: 0.9rem;">Mapa Analítico de Perfil</h3>
+                    <h3 style="text-align: center; margin-bottom: 5px; color: var(--text-light); text-transform: uppercase; font-size: 0.9rem;">Mapa Analítico</h3>
                     <h2 style="text-align: center; margin-bottom: 5px; color: var(--purple-dark);" id="res-nome"></h2>
                     <p id="res-data" style="text-align: center; color: var(--text-light); font-size: 0.85rem; margin-bottom: 25px;"></p>
                     
-                    <div class="chart-container">
-                        <canvas id="polarChart"></canvas>
-                    </div>
+                    <div class="chart-container"><canvas id="polarChart"></canvas></div>
                 </div>
 
                 <div class="card">
-                    <div class="profile-title" id="perfil-titulo"></div>
-                    <div class="profile-desc" id="perfil-desc"></div>
+                    <h2 id="perfil-titulo" style="color: var(--purple-dark); margin-bottom: 10px; border-bottom: 2px solid var(--border); padding-bottom: 10px;"></h2>
+                    <p id="perfil-desc" style="margin-bottom: 20px; line-height: 1.6;"></p>
                     
                     <div class="highlight-box">
                         <h4>🎯 Benefícios Organizacionais</h4>
@@ -141,27 +129,37 @@
                         <h4>📈 Plano de Desenvolvimento (Foco: <span id="pdi-area"></span>)</h4>
                         <p id="pdi-dica"></p>
                     </div>
+                    
+                    <div id="area-botao-gestor"></div>
                 </div>
             </div>
         </div>
 
         <div id="view-gestor" class="view">
             <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">
-                    <h2 style="color: var(--purple-dark); margin: 0;">Painel da Liderança</h2>
-                </div>
+                <h2 style="color: var(--purple-dark); margin-bottom: 10px;">Painel da Liderança</h2>
+                <p style="color: var(--text-light); margin-bottom: 20px;">Acompanhe o desempenho da equipe.</p>
+                
+                <button class="btn btn-whatsapp" onclick="enviarWhatsApp()">
+                    <svg viewBox="0 0 24 24"><path d="M12.031 0C5.408 0 0 5.414 0 12.046c0 2.128.552 4.196 1.6 6.023L.266 24l6.095-1.597A11.956 11.956 0 0012.031 24c6.621 0 12.031-5.414 12.031-12.046C24.062 5.414 18.652 0 12.031 0zm7.156 17.18c-.305.86-1.742 1.593-2.422 1.672-.633.078-1.46.164-4.226-.984-3.352-1.39-5.524-4.82-5.696-5.047-.164-.234-1.351-1.797-1.351-3.43 0-1.632.851-2.437 1.156-2.765.305-.328.664-.414.883-.414.219 0 .445 0 .633.008.203.008.484-.078.758.586.281.68.961 2.344 1.047 2.516.086.172.14.375.031.594-.109.219-.164.351-.328.547-.164.195-.344.422-.492.578-.164.172-.344.359-.148.695.188.336.844 1.406 1.82 2.273 1.258 1.117 2.32 1.46 2.664 1.632.344.172.547.148.75-.086.203-.234.875-1.015 1.109-1.367.234-.351.469-.289.781-.172.312.117 1.984.938 2.328 1.109.344.172.57.258.656.406.086.148.086.86-.219 1.719z"/></svg>
+                    Gerar Link e Enviar no WhatsApp
+                </button>
+                
+                <h3 style="margin-top: 10px; border-bottom: 2px solid var(--border); padding-bottom: 10px;">Avaliações Concluídas</h3>
                 
                 <div id="lista-avaliacoes"></div>
                 
-                <button class="btn btn-outline" onclick="fecharPainelGestor()">Sair do Painel</button>
+                <button class="btn btn-outline" style="margin-top: 20px;" onclick="location.reload()">Sair do Painel</button>
             </div>
         </div>
     </div>
 
 <script>
     // ==========================================
-    // CONFIGURAÇÃO DO FIREBASE (Sua conta)
+    // 1. CONFIGURAÇÃO FIREBASE E CHART.JS
     // ==========================================
+    Chart.register(ChartDataLabels);
+
     const firebaseConfig = {
       apiKey: "AIzaSyBINPrQHY3ViOoirPyIiWZsVzKbC2egKps",
       authDomain: "desenvolver144.firebaseapp.com",
@@ -171,52 +169,78 @@
       messagingSenderId: "258666388892",
       appId: "1:258666388892:web:0dc2d3bced1a998e287c59"
     };
-
-    // Inicializa o Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-
     // ==========================================
-    // LÓGICA DO APP E GRÁFICOS
+    // 2. FUNÇÕES DE TELA E NAVEGAÇÃO
     // ==========================================
-    Chart.register(ChartDataLabels);
-
     function switchTab(tabId) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(`view-${tabId}`).classList.add('active');
-        if(document.getElementById(`tab-${tabId}`)) {
-            document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    // ACESSO DO GESTOR (AGORA COM BOTÃO VISÍVEL)
+    function abrirGestor() {
+        const senha = prompt("Digite a senha da Liderança:");
+        if(senha === "144") {
+            switchTab('gestor');
+            loadAdminData(); // Puxa os dados da nuvem
+        } else if (senha !== null) {
+            alert("Senha incorreta!");
         }
     }
 
+    function enviarWhatsApp() {
+        const urlDoSistema = window.location.href.split('?')[0]; 
+        const mensagem = `Olá equipe! 🚀\n\nAcessem o link abaixo e realizem o nosso Mapeamento de Perfil Logístico.\n\nDemora só 2 minutinhos e você vê o seu resultado na hora!\n\nLink: ${urlDoSistema}`;
+        const urlWhatsApp = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensagem)}`;
+        window.open(urlWhatsApp, '_blank');
+    }
+
+    // ==========================================
+    // 3. BASE DE DADOS: QUESTÕES E PERFIS
+    // ==========================================
     const allQuestions = [
-        { dim: 'INI', q: "Faltam 5 minutos para o intervalo e a linha parou por falta de paletes vazios. O que você faz?", opts: [{t: "Vou rapidamente até o estoque, pego o palete e destravo a linha.", p: 100}, {t: "Aviso o líder pelo rádio e aguardo alguém trazer.", p: 50}, {t: "Aproveito que a linha parou e saio para o intervalo.", p: 0}] },
-        { dim: 'INI', q: "Você percebe que produtos pesados estão na parte mais alta da prateleira, dificultando a operação.", opts: [{t: "Anoto os códigos e sugiro à liderança uma mudança de layout.", p: 100}, {t: "Comento com os colegas que o layout é ruim, mas sigo trabalhando.", p: 50}, {t: "Não faço nada.", p: 0}] },
+        { dim: 'INI', q: "Faltam 5 minutos para o intervalo e a linha parou por falta de paletes vazios. O que você faz?", opts: [{t: "Vou rapidamente até o estoque, pego o palete e destravo a linha.", p: 100}, {t: "Aviso o líder pelo rádio e aguardo.", p: 50}, {t: "Aproveito que a linha parou e saio para o intervalo.", p: 0}] },
+        { dim: 'INI', q: "Você percebe que produtos pesados estão na parte mais alta da prateleira, dificultando a operação.", opts: [{t: "Anoto os códigos e sugiro à liderança uma mudança de layout.", p: 100}, {t: "Comento com os colegas que o layout é ruim.", p: 50}, {t: "Não faço nada.", p: 0}] },
         { dim: 'INI', q: "Você terminou sua lista de picking antes do fim do turno, mas outros corredores estão lotados.", opts: [{t: "Procuro a liderança e pergunto onde posso ajudar.", p: 100}, {t: "Começo a limpar meu equipamento devagar.", p: 50}, {t: "Vou para o vestiário mais cedo.", p: 0}] },
-        
         { dim: 'ORG', q: "Ao guardar mercadorias, a caixa não cabe perfeitamente no espaço alinhado.", opts: [{t: "Arrumo as outras caixas para criar o espaço correto.", p: 100}, {t: "Coloco a caixa meio de lado.", p: 50}, {t: "Deixo no corredor para o inventário arrumar.", p: 0}] },
         { dim: 'ORG', q: "Terminou o descarregamento e sobrou plástico-filme espalhado no piso.", opts: [{t: "Recolho tudo imediatamente e jogo nas lixeiras.", p: 100}, {t: "Empurro para o canto da parede.", p: 50}, {t: "Deixo no chão e vou embora.", p: 0}] },
-        
         { dim: 'EQP', q: "No fim de turno, como você passa o bastão para o colega que está chegando?", opts: [{t: "Repasso as pendências e o estado da máquina.", p: 100}, {t: "Aviso apenas se houver algo muito urgente parado.", p: 50}, {t: "Deixo a máquina e vou embora sem falar com ele.", p: 0}] },
-        { dim: 'EQP', q: "Um colega recém-contratado está travando o fluxo.", opts: [{t: "Paro um instante, ensino um atalho e o ajudo a entrar no ritmo.", p: 100}, {t: "Pego a tarefa dele e faço eu mesmo.", p: 50}, {t: "Fico impaciente e digo para ele se virar.", p: 0}] },
-        { dim: 'EQP', q: "Você escuta uma fofoca negativa sobre um colega da equipe. Como lida com isso?", opts: [{t: "Corto o assunto e foco na operação.", p: 100}, {t: "Escuto, mas comento apenas com meus amigos próximos.", p: 50}, {t: "Espalho a notícia ou vou tirar satisfação.", p: 0}] },
-        
+        { dim: 'EQP', q: "Um colega recém-contratado está travando o fluxo.", opts: [{t: "Paro um instante, ensino um atalho e o ajudo.", p: 100}, {t: "Pego a tarefa dele e faço eu mesmo.", p: 50}, {t: "Fico impaciente e digo para ele se virar.", p: 0}] },
+        { dim: 'EQP', q: "Você escuta uma fofoca negativa sobre um colega da equipe.", opts: [{t: "Corto o assunto e foco na operação.", p: 100}, {t: "Escuto, mas comento apenas com amigos próximos.", p: 50}, {t: "Espalho a notícia ou vou tirar satisfação.", p: 0}] },
         { dim: 'RES', q: "Ocorre um 'furo de estoque' crítico no meio de uma onda de pedidos urgentes.", opts: [{t: "Mantenho o controle e sigo separando outras tarefas.", p: 100}, {t: "Continuo trabalhando, mas fico nervoso.", p: 50}, {t: "Paro de trabalhar e começo a reclamar alto.", p: 0}] },
         { dim: 'RES', q: "Uma carreta não programada chega e altera as prioridades do seu dia.", opts: [{t: "Entendo a dinâmica, me reorganizo e inicio a tarefa.", p: 100}, {t: "Faço o serviço, mas reclamo da desorganização.", p: 50}, {t: "Me recuso a fazer.", p: 0}] },
         { dim: 'RES', q: "Um líder ou colega fala de forma ríspida devido ao estresse.", opts: [{t: "Entendo o calor da operação e converso depois.", p: 100}, {t: "Fico calado, guardo mágoa e passo a não ajudar.", p: 50}, {t: "Respondo no mesmo tom e inicio uma discussão.", p: 0}] },
-        
-        { dim: 'TEC', q: "Ao coletar produtos com validade, o sistema exige verificação. Qual a sua prática?", opts: [{t: "Confiro rigorosamente a data (FEFO).", p: 100}, {t: "Bipo a primeira data que vejo na frente do pallet.", p: 50}, {t: "Digito manualmente para ganhar tempo.", p: 0}] },
+        { dim: 'TEC', q: "Ao coletar produtos com validade, o sistema exige verificação. Qual a sua prática?", opts: [{t: "Confiro rigorosamente a data (FEFO).", p: 100}, {t: "Bipo a primeira data que vejo na frente.", p: 50}, {t: "Digito manualmente para ganhar tempo.", p: 0}] },
         { dim: 'TEC', q: "O sistema do coletor fica muito lento e trava.", opts: [{t: "Reinicio o coletor e me preparo para não parar o físico.", p: 100}, {t: "Fico aguardando de braços cruzados.", p: 50}, {t: "Uso como desculpa para ir tomar café.", p: 0}] },
-        
-        { dim: 'SEG', q: "Você precisa entrar na câmara fria por apenas 15 segundos.", opts: [{t: "Visto a japona térmica e as luvas. Regra não tem exceção.", p: 100}, {t: "Peço para alguém que já está lá dentro pegar.", p: 50}, {t: "Entro só de uniforme.", p: 0}] },
+        { dim: 'SEG', q: "Você precisa entrar na câmara fria por apenas 15 segundos.", opts: [{t: "Visto a japona térmica e as luvas.", p: 100}, {t: "Peço para alguém que já está lá dentro pegar.", p: 50}, {t: "Entro só de uniforme.", p: 0}] },
         { dim: 'SEG', q: "Como gerencia o uso de EPI e Celular?", opts: [{t: "Celular guardado e EPI completo 100% do tempo.", p: 100}, {t: "EPI completo, mas olho o celular de vez em quando.", p: 50}, {t: "Uso o celular enquanto opero a máquina.", p: 0}] }
     ];
 
+    const profiles = {
+        'INI': { title: "Empreendedor / Executor", desc: "Apresenta alta capacidade de iniciar ações sem depender de terceiros. Age rapidamente para destravar a operação.", ben: "Garante alto ritmo de execução logística." },
+        'ORG': { title: "Convencional / Estrategista", desc: "Perfil processual, preza pelo alinhamento e precisão. Prefere que o layout funcione como planejado.", ben: "Extrema confiabilidade na conferência e redução de avarias." },
+        'EQP': { title: "Social / Integrador", desc: "Atua de forma muito colaborativa. Evita conflitos e ajuda o time a fluir em harmonia.", ben: "Facilita a comunicação e eleva o clima organizacional." },
+        'RES': { title: "Resiliente / Estável", desc: "Forte inteligência emocional. Lida com alta pressão e furos de estoque sem estresse.", ben: "Mantém a qualidade da operação em momentos de crise." }
+    };
+
+    const dicsPDI = {
+        'INI': "Seja mais proativo: ao ver um gargalo, tome a frente para ajudar a resolver antes da cobrança.",
+        'ORG': "Foque no alinhamento de paletes, limpeza do setor e processos sistemáticos do WMS.",
+        'EQP': "Integre-se mais, ofereça ajuda aos colegas e faça passagens de turno impecáveis.",
+        'RES': "Em momentos de pico, respire fundo, não leve cobranças para o pessoal e evite reclamações.",
+        'TEC': "Dedique-se a entender as regras técnicas de FEFO/FIFO e as funcionalidades do WMS.",
+        'SEG': "Elimine as exceções para não usar EPI e evite distrações com o celular durante a operação."
+    };
+    const dimNames = { INI: 'Iniciativa', ORG: 'Organização', EQP: 'Trabalho em Equipe', RES: 'Resiliência', TEC: 'Domínio Técnico', SEG: 'Segurança' };
+
+    // ==========================================
+    // 4. LÓGICA DO QUIZ
+    // ==========================================
     let quizQuestions = [], currentQ = 0, selectedScore = null, myChart = null;
-    let scores = { INI: 0, ORG: 0, EQP: 0, RES: 0, TEC: 0, SEG: 0 };
-    let maxScores = { INI: 0, ORG: 0, EQP: 0, RES: 0, TEC: 0, SEG: 0 };
+    let scores = { INI: 0, ORG: 0, EQP: 0, RES: 0, TEC: 0, SEG: 0 }, maxScores = { INI: 0, ORG: 0, EQP: 0, RES: 0, TEC: 0, SEG: 0 };
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -229,17 +253,6 @@
     function startQuiz() {
         const nome = document.getElementById('user-name').value;
         const mat = document.getElementById('user-id').value;
-        
-        // CHAVE MESTRA DO GESTOR
-        if(nome.toLowerCase().trim() === 'gestor' && mat === '144') {
-            document.getElementById('user-name').value = ''; 
-            document.getElementById('user-id').value = '';
-            document.getElementById('main-tabs').style.display = 'none'; 
-            switchTab('gestor');
-            loadAdminData();
-            return;
-        }
-
         if(!nome || !mat) return alert('Por favor, preencha Nome e Matrícula.');
         
         sessionStorage.setItem('tempName', nome);
@@ -247,7 +260,6 @@
         quizQuestions = shuffle([...allQuestions]);
         scores = { INI: 0, ORG: 0, EQP: 0, RES: 0, TEC: 0, SEG: 0 };
         maxScores = { INI: 0, ORG: 0, EQP: 0, RES: 0, TEC: 0, SEG: 0 };
-        
         quizQuestions.forEach(q => maxScores[q.dim] += 100);
 
         currentQ = 0;
@@ -258,17 +270,14 @@
 
     function loadQuestion() {
         const q = quizQuestions[currentQ];
-        document.getElementById('q-counter').innerText = `Situação Comportamental ${currentQ + 1} de 15`;
+        document.getElementById('q-counter').innerText = `Situação ${currentQ + 1} de 15`;
         document.getElementById('q-text').innerText = q.q;
         
         const container = document.getElementById('options-container');
         container.innerHTML = '';
         document.getElementById('next-btn').disabled = true;
-        selectedScore = null;
 
-        const mixedOpts = shuffle([...q.opts]);
-
-        mixedOpts.forEach(opt => {
+        shuffle([...q.opts]).forEach(opt => {
             const div = document.createElement('div');
             div.className = 'option-card';
             div.innerText = opt.t;
@@ -289,187 +298,105 @@
         else generateDevolutiva();
     }
 
-    const profiles = {
-        'INI': { title: "Empreendedor / Executor", desc: "Apresenta alta capacidade de iniciar ações sem depender de terceiros. Tende a agir rapidamente para destravar a operação e possui muita atitude.", ben: "Agir mesmo com orientações limitadas e alto ritmo de execução logística." },
-        'ORG': { title: "Convencional / Estrategista", desc: "Perfil processual, preza pelo alinhamento, limpeza e precisão. Prefere que o layout e as regras funcionem exatamente como planejado.", ben: "Extrema confiabilidade na conferência de estoque e redução de avarias." },
-        'EQP': { title: "Social / Integrador", desc: "Atua de forma muito colaborativa. Enxerga a operação como uma grande engrenagem, evita conflitos e ajuda o time a fluir em harmonia.", ben: "Facilita a comunicação no setor e eleva o clima organizacional do turno." },
-        'RES': { title: "Resiliente / Estável", desc: "Possui forte inteligência emocional. Consegue lidar com alta pressão, furos de estoque e mudanças sem repassar o estresse aos colegas.", ben: "Mantém a estabilidade e a qualidade da operação em momentos de crise." }
-    };
-
-    const dicsPDI = {
-        'INI': "Seja mais proativo: ao ver um gargalo, tome a frente para ajudar a resolver antes da cobrança.",
-        'ORG': "Foque no alinhamento de paletes, limpeza do setor e nos processos sistemáticos do WMS.",
-        'EQP': "Integre-se mais, evite fofocas, ofereça ajuda aos colegas e faça passagens de turno impecáveis.",
-        'RES': "Em momentos de pico, respire fundo, não leve cobranças para o pessoal e evite reclamações.",
-        'TEC': "Dedique-se a entender as regras técnicas de FEFO/FIFO e as funcionalidades do WMS.",
-        'SEG': "Elimine as exceções para não usar EPI e evite distrações com o celular durante a operação."
-    };
-    
-    const dimNames = { INI: 'Iniciativa', ORG: 'Organização', EQP: 'Trabalho em Equipe', RES: 'Resiliência', TEC: 'Domínio Técnico', SEG: 'Segurança' };
-
     function generateDevolutiva() {
         const nome = sessionStorage.getItem('tempName');
         const dataAvaliacao = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute:'2-digit' });
         
         const pctScores = {
-            INI: Math.round((scores.INI / maxScores.INI) * 100) || 0,
-            ORG: Math.round((scores.ORG / maxScores.ORG) * 100) || 0,
-            EQP: Math.round((scores.EQP / maxScores.EQP) * 100) || 0,
-            RES: Math.round((scores.RES / maxScores.RES) * 100) || 0,
-            TEC: Math.round((scores.TEC / maxScores.TEC) * 100) || 0,
-            SEG: Math.round((scores.SEG / maxScores.SEG) * 100) || 0
+            INI: Math.round((scores.INI / maxScores.INI) * 100) || 0, ORG: Math.round((scores.ORG / maxScores.ORG) * 100) || 0,
+            EQP: Math.round((scores.EQP / maxScores.EQP) * 100) || 0, RES: Math.round((scores.RES / maxScores.RES) * 100) || 0,
+            TEC: Math.round((scores.TEC / maxScores.TEC) * 100) || 0, SEG: Math.round((scores.SEG / maxScores.SEG) * 100) || 0
         };
 
         let dom = 'INI', minDim = 'INI', maxVal = -1, minVal = 101;
-
         for (const [key, val] of Object.entries(pctScores)) {
             if (val > maxVal) { maxVal = val; dom = key; }
             if (val < minVal) { minVal = val; minDim = key; }
         }
-
         if (dom === 'TEC' || dom === 'SEG') dom = 'ORG'; 
 
         const resultData = { nome, date: dataAvaliacao, pctScores, dom, minDim };
         
-        // UI mostra carregamento enquanto salva no Firebase
         document.getElementById('quiz-section').style.display = 'none';
         document.getElementById('loading-section').style.display = 'block';
 
-        // SALVANDO NO FIREBASE NUVEM
-        database.ref('avaliacoes').push(resultData)
-            .then(() => {
-                document.getElementById('loading-section').style.display = 'none';
-                renderDevolutivaView(nome, dataAvaliacao, dom, minDim, pctScores, true);
-                
-                document.getElementById('login-section').style.display = 'block';
-                document.getElementById('user-name').value = ''; document.getElementById('user-id').value = '';
-            })
-            .catch((error) => {
-                alert("Ocorreu um erro ao salvar: " + error.message);
-                document.getElementById('loading-section').style.display = 'none';
-                document.getElementById('login-section').style.display = 'block';
-            });
+        database.ref('avaliacoes').push(resultData).then(() => {
+            document.getElementById('loading-section').style.display = 'none';
+            // isColaborador = true (abre aba de resultado e exibe botão Sair)
+            renderDevolutivaView(nome, dataAvaliacao, dom, minDim, pctScores, true);
+        }).catch(err => {
+            alert("Erro ao salvar: " + err.message);
+        });
     }
 
+    // ==========================================
+    // 5. RENDERIZAÇÃO DO RELATÓRIO E GRÁFICO
+    // ==========================================
     function renderDevolutivaView(nome, dataTexto, dom, minDim, pctScores, isColaborador = false) {
-        document.getElementById('no-result').style.display = 'none';
-        document.getElementById('result-content').style.display = 'block';
-        
         document.getElementById('res-nome').innerText = nome;
-        document.getElementById('res-data').innerText = `Data da Avaliação: ${dataTexto}`;
-        
-        document.getElementById('perfil-titulo').innerText = `Perfil Dominante: ${profiles[dom].title}`;
+        document.getElementById('res-data').innerText = `Realizado em: ${dataTexto}`;
+        document.getElementById('perfil-titulo').innerText = `Perfil: ${profiles[dom].title}`;
         document.getElementById('perfil-desc').innerText = profiles[dom].desc;
         document.getElementById('perfil-beneficios').innerText = profiles[dom].ben;
-        
         document.getElementById('pdi-area').innerText = dimNames[minDim];
         document.getElementById('pdi-dica').innerText = dicsPDI[minDim];
 
         renderChart(pctScores);
         
+        const areaBotao = document.getElementById('area-botao-gestor');
+        areaBotao.innerHTML = ''; 
+
         if(isColaborador) {
-            document.getElementById('main-tabs').style.display = 'flex';
+            // O colaborador vê isso quando termina
             switchTab('devolutivas');
+            areaBotao.innerHTML = '<button class="btn btn-outline" onclick="location.reload()">Sair do Sistema</button>';
         } else {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-devolutivas').classList.add('active');
+            // O Gestor vê isso quando clica em alguém da lista
+            switchTab('devolutivas');
+            areaBotao.innerHTML = '<button class="btn btn-outline" onclick="switchTab(\'gestor\')">← Voltar para a Lista de Colaboradores</button>';
         }
     }
 
     function renderChart(dataScores) {
         const ctx = document.getElementById('polarChart').getContext('2d');
         if(myChart) myChart.destroy();
-
         myChart = new Chart(ctx, {
             type: 'polarArea',
             data: {
                 labels: ['Iniciativa', 'Organização', 'Equipe', 'Resiliência', 'Técnico', 'Segurança'],
                 datasets: [{
                     data: [dataScores.INI, dataScores.ORG, dataScores.EQP, dataScores.RES, dataScores.TEC, dataScores.SEG],
-                    backgroundColor: [
-                        'rgba(249, 115, 22, 0.9)', 'rgba(56, 189, 248, 0.9)', 'rgba(168, 85, 247, 0.9)',
-                        'rgba(236, 72, 153, 0.9)', 'rgba(34, 197, 94, 0.9)', 'rgba(234, 179, 8, 0.9)'
-                    ],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
+                    backgroundColor: ['rgba(249, 115, 22, 0.9)', 'rgba(56, 189, 248, 0.9)', 'rgba(168, 85, 247, 0.9)', 'rgba(236, 72, 153, 0.9)', 'rgba(34, 197, 94, 0.9)', 'rgba(234, 179, 8, 0.9)'],
+                    borderColor: '#ffffff', borderWidth: 2
                 }]
             },
-            options: {
-                responsive: true,
-                scales: { r: { ticks: { display: false, min: 0, max: 100 }, grid: { color: 'rgba(0, 0, 0, 0.05)' } } },
-                plugins: {
-                    legend: { display: false },
-                    datalabels: {
-                        color: '#ffffff',
-                        font: { family: 'Inter', weight: 'bold', size: 11 },
-                        formatter: function(value, context) {
-                            return value > 15 ? context.chart.data.labels[context.dataIndex] + '\n' + value + '%' : '';
-                        },
-                        textAlign: 'center', anchor: 'center', align: 'center'
-                    }
-                }
-            }
+            options: { scales: { r: { ticks: { display: false, min: 0, max: 100 }, grid: { color: 'rgba(0, 0, 0, 0.05)' } } }, plugins: { legend: { display: false }, datalabels: { color: '#ffffff', font: { family: 'Inter', weight: 'bold', size: 11 }, formatter: function(value, context) { return value > 15 ? context.chart.data.labels[context.dataIndex] + '\n' + value + '%' : ''; }, textAlign: 'center', anchor: 'center', align: 'center' } } }
         });
     }
 
-    // --- PAINEL DO GESTOR (CONECTADO À NUVEM) ---
+    // ==========================================
+    // 6. CARREGAR LISTA DO GESTOR (FIREBASE)
+    // ==========================================
     function loadAdminData() {
         const container = document.getElementById('lista-avaliacoes');
-        container.innerHTML = '<p style="color:var(--text-light)">Carregando avaliações da nuvem...</p>';
+        container.innerHTML = '<p style="text-align:center;">Carregando...</p>';
 
-        database.ref('avaliacoes').once('value').then((snapshot) => {
+        database.ref('avaliacoes').on('value', (snapshot) => {
             container.innerHTML = '';
-            
-            if(!snapshot.exists()) {
-                container.innerHTML = '<p style="color:var(--text-light)">Nenhuma avaliação recebida ainda.</p>';
-                return;
-            }
+            if(!snapshot.exists()) return container.innerHTML = '<p>Nenhuma avaliação ainda.</p>';
 
-            // Transforma o objeto do Firebase em Array e inverte a ordem (mais novos primeiro)
-            const data = snapshot.val();
-            const dbArray = Object.values(data).reverse();
-
-            dbArray.forEach(item => {
+            Object.values(snapshot.val()).reverse().forEach(item => {
                 const div = document.createElement('div');
-                div.style.cssText = "padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; background: #fafafa; cursor: pointer; transition: all 0.2s;";
-                div.onmouseover = () => div.style.borderColor = "var(--purple-light)";
-                div.onmouseout = () => div.style.borderColor = "var(--border)";
-                
+                div.className = 'gestor-item';
                 div.innerHTML = `
-                    <div>
-                        <strong style="color: var(--purple-dark); font-size: 1.1rem;">${item.nome}</strong><br>
-                        <span style="font-size: 0.85rem; color: var(--text-light);">${item.date}</span>
-                    </div>
-                    <div style="background: var(--purple-light); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">Ver Mapa</div>
-                `;
+                    <div><strong style="color:var(--purple-dark);font-size:1.1rem;">${item.nome}</strong><br><span style="font-size:0.85rem;color:var(--text-light);">${item.date}</span></div>
+                    <div style="background:var(--purple-light);color:white;padding:6px 12px;border-radius:6px;font-size:0.8rem;font-weight:bold;">Abrir Laudo</div>`;
                 
-                div.onclick = () => {
-                    renderDevolutivaView(item.nome, item.date, item.dom, item.minDim, item.pctScores, false);
-                    
-                    let btnVoltar = document.getElementById('btn-voltar-gestor');
-                    if(!btnVoltar) {
-                        btnVoltar = document.createElement('button');
-                        btnVoltar.id = 'btn-voltar-gestor';
-                        btnVoltar.className = 'btn btn-outline';
-                        btnVoltar.innerText = '← Voltar para a Lista da Equipe';
-                        btnVoltar.onclick = () => {
-                            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                            document.getElementById('view-gestor').classList.add('active');
-                            btnVoltar.remove(); 
-                        };
-                        document.getElementById('result-content').appendChild(btnVoltar);
-                    }
-                };
+                // Ao clicar, chama a tela de relatório passando isColaborador = false (para mostrar botão de voltar)
+                div.onclick = () => renderDevolutivaView(item.nome, item.date, item.dom, item.minDim, item.pctScores, false);
                 container.appendChild(div);
             });
-        }).catch((error) => {
-            container.innerHTML = `<p style="color:red">Erro ao carregar do banco: ${error.message}</p>`;
         });
-    }
-
-    function fecharPainelGestor() {
-        document.getElementById('main-tabs').style.display = 'flex';
-        switchTab('inicio');
     }
 </script>
 
